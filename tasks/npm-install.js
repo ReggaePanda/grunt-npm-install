@@ -21,18 +21,19 @@ module.exports = function(grunt) {
       }
       done();
     }
-    if(this.data.src) {
+    if (this.data.src) {
       var installPath = this.data.src;
     } else {
-      var installPath = "./";
+      var installPath = ["./"];
     }
-    npm.load(function (err, npm) {
-        if (err) {
-          grunt.log.error(err);
-          return;
-        }
-
-        npm.commands.install(installPath, modules, errorHandler);
+    npm.load(function(err, npm) {
+      if (err) {
+        grunt.log.error(err);
+        return;
+      }
+      for (var i = 0; i < installPath.length; i++) {
+        npm.commands.install(installPath[i], modules, errorHandler);
+      }
     });
   });
 };
