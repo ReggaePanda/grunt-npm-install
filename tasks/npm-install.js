@@ -11,7 +11,7 @@
 module.exports = function(grunt) {
   var npm = require('npm');
 
-  grunt.registerTask('npm-install', 'Install npm modules.', function() {
+  grunt.registerMultiTask('npm-install', 'Install npm modules.', function() {
     var modules = Array.prototype.slice.call(arguments);
     var done = this.async();
 
@@ -21,14 +21,18 @@ module.exports = function(grunt) {
       }
       done();
     }
-
+    if(this.data.src) {
+      var installPath = this.data.src;
+    } else {
+      var installPath = "./";
+    }
     npm.load(function (err, npm) {
-      if (err) {
-        grunt.log.error(err);
-        return;
-      }
+        if (err) {
+          grunt.log.error(err);
+          return;
+        }
 
-      npm.commands.install(modules, errorHandler);
+        npm.commands.install(installPath, modules, errorHandler);
     });
   });
 };
